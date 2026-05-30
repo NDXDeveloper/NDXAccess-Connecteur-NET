@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-test:
+    name: Build & Test (AnyCPU)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore NDXAccess.sln
+
+      - name: Build
+        run: dotnet build NDXAccess.sln -c Release --no-restore
+
+      # Les tests unitaires s'exécutent toujours. Les tests d'intégration nécessitent le
+      # provider Microsoft ACE OLE DB : s'il est absent du runner, ils sont automatiquement
+      # IGNORÉS (SkippableFact), pas en échec.
+      - name: Test
+        run: dotnet test NDXAccess.sln -c Release --no-build --verbosity normal
+
+      - name: Pack (NuGet + symboles)
+        run: dotnet pack src/NDXAccess/NDXAccess.vbproj -c Release --no-build -o artifacts
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: artifacts/*.*nupkg
+
+  build-platforms:
+    name: Build ${{ matrix.platform }}
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        platform: [x86, x64]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Build ${{ matrix.platform }}
+        run: dotnet build NDXAccess.sln -c Release -p:Platform=${{ matrix.platform }}

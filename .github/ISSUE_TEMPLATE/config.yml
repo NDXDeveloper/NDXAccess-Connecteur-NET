@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Dépannage & FAQ
+    url: https://github.com/NDXDeveloper/NDXAccess-Connecteur-NET/blob/main/docs/troubleshooting/README.md
+    about: Consultez d'abord le guide de dépannage (x86/x64, verrous, paramètres, 2 Go…).
+  - name: Question de sécurité
+    url: https://github.com/NDXDeveloper/NDXAccess-Connecteur-NET/blob/main/SECURITY.md
+    about: Pour signaler une vulnérabilité, suivez la politique de sécurité (pas d'issue publique).
