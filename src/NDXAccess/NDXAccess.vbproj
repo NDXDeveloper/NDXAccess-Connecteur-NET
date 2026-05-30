@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <!-- RootNamespace vide : les fichiers déclarent explicitement "Namespace NDXAccess". -->
+    <RootNamespace></RootNamespace>
+    <AssemblyName>NDXAccess</AssemblyName>
+    <OptionStrict>On</OptionStrict>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionInfer>On</OptionInfer>
+    <OptionCompare>Binary</OptionCompare>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+
+    <!-- Windows uniquement : le provider ACE n'existe pas ailleurs. -->
+    <SupportedOSPlatform>windows</SupportedOSPlatform>
+
+    <!-- Le binaire est neutre (AnyCPU) ; le bitness de l'appli hôte détermine l'ACE requis.
+         x86 / x64 sont fournis pour produire des builds dédiés si nécessaire. -->
+    <Platforms>AnyCPU;x86;x64</Platforms>
+
+    <!-- Informations du package NuGet -->
+    <PackageId>NDXAccess</PackageId>
+    <Version>1.2.0</Version>
+    <Authors>Nicolas DEOUX</Authors>
+    <Company>NDXDev</Company>
+    <Product>NDXAccess</Product>
+    <Description>Connecteur Microsoft Access (.accdb / .mdb) moderne pour VB.NET : API fluide, injection de dépendances, logging, health checks, compactage et détection x86/x64 du provider ACE. Windows uniquement (provider Microsoft.ACE.OLEDB).</Description>
+    <Copyright>Copyright (c) 2026 Nicolas DEOUX</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/NDXDeveloper/NDXAccess-Connecteur-NET</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/NDXDeveloper/NDXAccess-Connecteur-NET</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>access;accdb;mdb;oledb;ace;database;vbnet;windows;connection</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+
+    <!-- Documentation XML -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <!-- Compilation déterministe -->
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+
+    <!-- SourceLink + symboles (débogage du package) -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.OleDb" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>
